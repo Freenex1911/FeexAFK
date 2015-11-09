@@ -1,1 +1,2 @@
 # EasyAFK
+Simple afk plugin.
