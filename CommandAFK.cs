@@ -25,6 +25,7 @@ namespace Freenex.EasyAFK
 
             if (EasyAFK.listAFK.Contains(player.SteamName))
             {
+                if (!(player.HasPermission("afk.check"))) { return; }
                 if (command[1] == "check")
                 {
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_check_true") == string.Empty))
@@ -43,6 +44,7 @@ namespace Freenex.EasyAFK
             }
             else
             {
+                if (!(player.HasPermission("afk.check"))) { return; }
                 if (command[1] == "check")
                 {
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_check_false") == string.Empty))
@@ -117,7 +119,8 @@ namespace Freenex.EasyAFK
             {
                 return new List<string>()
                 {
-                    "afk"
+                    "afk",
+                    "afk.check"
                 };
             }
         }
