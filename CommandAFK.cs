@@ -10,7 +10,7 @@ namespace Freenex.EasyAFK
     {
         public void Execute(IRocketPlayer caller, string[] command)
         {
-            if (command.Length == 0 || command.Length > 2)
+            if (command.Length == 0 || command.Length > 1)
             {
                 return;
             }
@@ -18,23 +18,31 @@ namespace Freenex.EasyAFK
             if (command.Length == 1)
             {
                 if (!(caller.HasPermission("afk"))) { return; }
-                UnturnedPlayer player = (UnturnedPlayer)caller;
-                EasyAFK.listAFK.Add(player.SteamName);
-                if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_self") == string.Empty))
-                {
-                    UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_self"), Color.yellow);
-                }
-            }
-
-            if (command.Length == 2)
-            {
-                if (!(caller.HasPermission("afk.other"))) { return; }
                 UnturnedPlayer player = UnturnedPlayer.FromName(command[0]);
+
                 if (player == null)
                 {
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_not_found") == string.Empty))
                     {
                         UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_not_found"), Color.yellow);
+                    }
+                    return;
+                }
+
+                if (caller.Id == player.Id)
+                {
+                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_error_self") == string.Empty))
+                    {
+                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_error_self", player.DisplayName), Color.yellow);
+                    }
+                    return;
+                }
+
+                if (player.IsAdmin)
+                {
+                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_error_admin") == string.Empty))
+                    {
+                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_error_admin", player.DisplayName), Color.yellow);
                     }
                     return;
                 }
@@ -60,7 +68,7 @@ namespace Freenex.EasyAFK
                 {
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_afk_chat") == string.Empty))
                     {
-                        UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_afk_chat", player.DisplayName));
+                        UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_afk_chat", player.DisplayName), Color.yellow);
                     }
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_player") == string.Empty))
                     {
@@ -104,8 +112,7 @@ namespace Freenex.EasyAFK
             {
                 return new List<string>()
                 {
-                    "afk",
-                    "afk.other"
+                    "afk"
                 };
             }
         }
