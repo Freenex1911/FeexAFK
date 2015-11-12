@@ -10,7 +10,7 @@ namespace Freenex.EasyAFK
     {
         public void Execute(IRocketPlayer caller, string[] command)
         {
-            if (command.Length == 0 || command.Length > 2 || (!caller.HasPermission("afk"))) { return; }
+            if (command.Length == 0 || command.Length > 2 || !caller.HasPermission("afk.set") || !caller.HasPermission("afk.check")) { return; }
 
             UnturnedPlayer player = UnturnedPlayer.FromName(command[0]);
 
@@ -23,36 +23,34 @@ namespace Freenex.EasyAFK
                 return;
             }
 
-            if (EasyAFK.listAFK.Contains(player.SteamName))
+            if (command.Length == 2 && command[1] == "check")
             {
-                if (!(player.HasPermission("afk.check"))) { return; }
-                if (command[1] == "check")
+                if (EasyAFK.listAFK.Contains(player.SteamName))
                 {
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_check_true") == string.Empty))
                     {
                         UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_check_true", player.DisplayName), Color.yellow);
                     }
-                    return;
                 }
                 else
-                {
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_already_afk") == string.Empty))
-                    {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_already_afk", player.DisplayName), Color.yellow);
-                    }
-                }
-            }
-            else
-            {
-                if (!(player.HasPermission("afk.check"))) { return; }
-                if (command[1] == "check")
                 {
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_check_false") == string.Empty))
                     {
                         UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_check_false", player.DisplayName), Color.yellow);
                     }
                 }
+
                 return;
+            }
+
+            if (!caller.HasPermission("afk.set")) { return; }
+
+            if (EasyAFK.listAFK.Contains(player.SteamName))
+            {
+                if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_already_afk") == string.Empty))
+                {
+                    UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_other_caller_already_afk", player.DisplayName), Color.yellow);
+                }
             }
 
             if (caller.Id == player.Id)
@@ -91,7 +89,7 @@ namespace Freenex.EasyAFK
 
         public string Help
         {
-            get { return "Set others afk"; }
+            get { return "Set others afk or check if they're afk"; }
         }
 
         public string Name
@@ -119,7 +117,7 @@ namespace Freenex.EasyAFK
             {
                 return new List<string>()
                 {
-                    "afk",
+                    "afk.set",
                     "afk.check"
                 };
             }
