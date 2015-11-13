@@ -103,6 +103,8 @@ namespace Freenex.EasyAFK
 
         private void playerCheckAFK(UnturnedPlayer player)
         {
+            if (player.HasPermission("afk.prevent")) { return; }
+
             try
             {
                 if (DateTime.Now.Subtract(dicLastActivity[player.SteamName]).TotalSeconds >= (Configuration.Instance.afkSeconds))
