@@ -18,7 +18,7 @@ namespace Freenex.EasyAFK
         public static EasyAFK Instance;
 
         public static readonly List<string> listAFK = new List<string>();
-        private static readonly Dictionary<string, Thread> dicCheackPlayers = new Dictionary<string, Thread>();
+        private static readonly Dictionary<string, Thread> dicCheckPlayers = new Dictionary<string, Thread>();
         private static readonly Dictionary<string, DateTime> dicLastActivity = new Dictionary<string, DateTime>();
         private static List<string> playerList = new List<string>();
 
@@ -64,7 +64,7 @@ namespace Freenex.EasyAFK
                     dicLastActivity.Add(player.SteamName, DateTime.Now);
                 else
                     dicLastActivity[player.SteamName] = DateTime.Now;
-                if (!dicCheackPlayers.ContainsKey(player.SteamName))
+                if (!dicCheckPlayers.ContainsKey(player.SteamName))
                 {
                     Thread t = new Thread(new ThreadStart(() =>
                     {
@@ -77,7 +77,7 @@ namespace Freenex.EasyAFK
                     {
                         IsBackground = true
                     };
-                    dicCheackPlayers.Add(player.SteamName, t);
+                    dicCheckPlayers.Add(player.SteamName, t);
                     t.Start();
                 }
             }
@@ -96,7 +96,9 @@ namespace Freenex.EasyAFK
             UnturnedPlayerEvents.OnPlayerInventoryUpdated -= UnturnedPlayerEvents_OnPlayerInventoryUpdated;
             UnturnedPlayerEvents.OnPlayerUpdatePosition -= UnturnedPlayerEvents_OnPlayerUpdatePosition;
             UnturnedPlayerEvents.OnPlayerUpdateStat -= UnturnedPlayerEvents_OnPlayerUpdateStat;
-            dicCheackPlayers.Clear();
+            listAFK.Clear();
+            dicCheckPlayers.Clear();
+            dicLastActivity.Clear();
 
             Logger.Log("Freenex's EasyAFK has been unloaded!");
         }
@@ -113,11 +115,11 @@ namespace Freenex.EasyAFK
                     {
                         if (Configuration.Instance.afkKick)
                         {
-                            player.Kick(EasyAFK.Instance.Translations.Instance.Translate("afk_kick_msg"));
                             if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_kick_chat") == string.Empty))
                             {
                                 UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_kick_chat", player.DisplayName), Color.yellow);
                             }
+                            player.Kick(EasyAFK.Instance.Translations.Instance.Translate("afk_kick_msg"));
                         }
                         else
                         {
@@ -159,7 +161,7 @@ namespace Freenex.EasyAFK
                 dicLastActivity.Add(player.SteamName, DateTime.Now);
             else
                 dicLastActivity[player.SteamName] = DateTime.Now;
-            if (!dicCheackPlayers.ContainsKey(player.SteamName))
+            if (!dicCheckPlayers.ContainsKey(player.SteamName))
             {
                 Thread t = new Thread(new ThreadStart(() =>
                 {
@@ -172,7 +174,7 @@ namespace Freenex.EasyAFK
                 {
                     IsBackground = true
                 };
-                dicCheackPlayers.Add(player.SteamName, t);
+                dicCheckPlayers.Add(player.SteamName, t);
                 t.Start();
             }
         }
@@ -182,10 +184,10 @@ namespace Freenex.EasyAFK
             playerList.Remove(player.CharacterName);
             if (dicLastActivity.ContainsKey(player.SteamName))
                 dicLastActivity.Remove(player.SteamName);
-            if (dicCheackPlayers.ContainsKey(player.SteamName))
+            if (dicCheckPlayers.ContainsKey(player.SteamName))
             {
-                dicCheackPlayers[player.SteamName].Abort();
-                dicCheackPlayers.Remove(player.SteamName);
+                dicCheckPlayers[player.SteamName].Abort();
+                dicCheckPlayers.Remove(player.SteamName);
             }
             if (listAFK.Contains(player.SteamName))
                 listAFK.Remove(player.SteamName);
