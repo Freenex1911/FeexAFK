@@ -59,11 +59,10 @@ namespace Freenex.EasyAFK
             UnturnedPlayerEvents.OnPlayerInventoryUpdated += UnturnedPlayerEvents_OnPlayerInventoryUpdated;
             //UnturnedPlayerEvents.OnPlayerUpdatePosition += UnturnedPlayerEvents_OnPlayerUpdatePosition;
             UnturnedPlayerEvents.OnPlayerUpdateStat += UnturnedPlayerEvents_OnPlayerUpdateStat;
-
+            
             foreach (SteamPlayer player in Provider.Players)
             {
                 UnturnedPlayer UPplayer = UnturnedPlayer.FromSteamPlayer(player);
-                if (UPplayer.HasPermission("afk.prevent")) { return; }
 
                 if (!dicLastActivity.ContainsKey(UPplayer.CSteamID))
                     dicLastActivity.Add(UPplayer.CSteamID, DateTime.Now);
@@ -135,7 +134,9 @@ namespace Freenex.EasyAFK
                 {
                     if (!listAFK.Contains(player.CSteamID))
                     {
-                        if (Configuration.Instance.afkKick)
+                        if (player.HasPermission("afk.prevent") && !player.IsAdmin || !Configuration.Instance.afkCheckAdmins && player.IsAdmin) { return; }
+
+                        if (Configuration.Instance.afkKick && !player.IsAdmin || Configuration.Instance.afkKickAdmins && player.IsAdmin)
                         {
                             if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_general_kick_chat") == string.Empty))
                             {
@@ -160,8 +161,6 @@ namespace Freenex.EasyAFK
 
         private void updatePlayerActivity(UnturnedPlayer player)
         {
-            if (player.HasPermission("afk.prevent")) { return; }
-
             try
             {
                 dicLastActivity[player.CSteamID] = DateTime.Now;
@@ -179,8 +178,6 @@ namespace Freenex.EasyAFK
 
         private void PlayerConnected(UnturnedPlayer player)
         {
-            if (player.HasPermission("afk.prevent")) { return; }
-
             if (!dicLastActivity.ContainsKey(player.CSteamID))
                 dicLastActivity.Add(player.CSteamID, DateTime.Now);
             else

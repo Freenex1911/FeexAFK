@@ -42,9 +42,11 @@ namespace Freenex.EasyAFK
                 return;
             }
 
+            if (command.Length != 2) { return; }
+
             UnturnedPlayer player = UnturnedPlayer.FromName(command[1]);
 
-            if (player == null && command[0] != "checkall")
+            if (player == null)
             {
                 if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_general_not_found") == string.Empty))
                 {
@@ -72,7 +74,7 @@ namespace Freenex.EasyAFK
                     return;
                 }
 
-                if (player.IsAdmin)
+                if (player.IsAdmin && !EasyAFK.Instance.Configuration.Instance.afkCheckAdmins)
                 {
                     if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_admin") == string.Empty))
                     {
