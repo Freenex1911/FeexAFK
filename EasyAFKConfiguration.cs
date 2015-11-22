@@ -8,6 +8,7 @@ namespace Freenex.EasyAFK
         public bool afkCheckAdmins;
         public bool afkKick;
         public bool afkKickAdmins;
+        public int afkKickMinPlayers;
         public int afkCheckInterval;
         
 
@@ -17,6 +18,7 @@ namespace Freenex.EasyAFK
             afkCheckAdmins = false;
             afkKick = false;
             afkKickAdmins = false;
+            afkKickMinPlayers = 0;
             afkCheckInterval = 1000;
         }
     }

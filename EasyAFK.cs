@@ -138,6 +138,8 @@ namespace Freenex.EasyAFK
 
                         if (Configuration.Instance.afkKick && !player.IsAdmin || Configuration.Instance.afkKickAdmins && player.IsAdmin)
                         {
+                            if (!(Provider.Players.Count > Configuration.Instance.afkKickMinPlayers)) { return; }
+
                             if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_general_kick_chat") == string.Empty))
                             {
                                 UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_general_kick_chat", player.DisplayName), Color.yellow);
