@@ -8,6 +8,43 @@ namespace Freenex.EasyAFK
 {
     public class CommandExp : IRocketCommand
     {
+        public string Name
+        {
+            get { return "afk"; }
+        }
+
+        public string Help
+        {
+            get { return "Set others afk or check if they're afk"; }
+        }
+
+        public string Syntax
+        {
+            get { return "<set/check/checkall> [<player>]"; }
+        }
+
+        public List<string> Aliases
+        {
+            get { return new List<string>(); }
+        }
+
+        public AllowedCaller AllowedCaller
+        {
+            get { return AllowedCaller.Player; }
+        }
+
+        public List<string> Permissions
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "afk.set",
+                    "afk.check"
+                };
+            }
+        }
+
         public void Execute(IRocketPlayer caller, string[] command)
         {
             if (!caller.HasPermission("afk.set") && !caller.HasPermission("afk.check")) { return; }
@@ -121,40 +158,5 @@ namespace Freenex.EasyAFK
             }
         }
 
-        public string Help
-        {
-            get { return "Set others afk or check if they're afk"; }
-        }
-
-        public string Name
-        {
-            get { return "afk"; }
-        }
-
-        public string Syntax
-        {
-            get { return "<set/check/checkall> [<player>]"; }
-        }
-
-        public bool AllowFromConsole
-        {
-            get { return false; }
-        }
-
-        public List<string> Aliases
-        {
-            get { return new List<string>(); }
-        }
-        public List<string> Permissions
-        {
-            get
-            {
-                return new List<string>()
-                {
-                    "afk.set",
-                    "afk.check"
-                };
-            }
-        }
     }
 }
