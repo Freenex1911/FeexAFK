@@ -1,2 +1,2 @@
-# EasyAFK
+# FeexAFK
 Simple afk plugin.
