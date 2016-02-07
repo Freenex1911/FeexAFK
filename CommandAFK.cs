@@ -4,7 +4,7 @@ using Rocket.Unturned.Player;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Freenex.EasyAFK
+namespace Freenex.FeexAFK
 {
     public class CommandExp : IRocketCommand
     {
@@ -51,11 +51,11 @@ namespace Freenex.EasyAFK
 
             if (command.Length == 1 && command[0] == "checkall" && caller.HasPermission("afk.check"))
             {
-                if (EasyAFK.listAFK.Count == 0)
+                if (FeexAFK.listAFK.Count == 0)
                 {
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_false") == string.Empty))
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_false") != "afk_checkall_caller_false")
                     {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_false"), Color.green);
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_false"), Color.green);
                     }
                 }
                 else
@@ -63,16 +63,16 @@ namespace Freenex.EasyAFK
                     System.Text.StringBuilder afkDisplayNameList = new System.Text.StringBuilder();
 
                     bool firstPlayer = true;
-                    foreach (Steamworks.CSteamID afkPlayer in EasyAFK.listAFK)
+                    foreach (Steamworks.CSteamID afkPlayer in FeexAFK.listAFK)
                     {
                         if (firstPlayer) { firstPlayer = false; }
                         else { afkDisplayNameList.Append(", "); }
 
                         afkDisplayNameList.Append(UnturnedPlayer.FromCSteamID(afkPlayer).DisplayName);
                     }
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_true") == string.Empty))
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_true") != "afk_checkall_caller_true")
                     {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_true", EasyAFK.listAFK.Count, afkDisplayNameList.ToString()), Color.green);
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_true", FeexAFK.listAFK.Count, afkDisplayNameList.ToString()), Color.green);
                     }
                 }
 
@@ -85,72 +85,72 @@ namespace Freenex.EasyAFK
 
             if (player == null)
             {
-                if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_general_not_found") == string.Empty))
+                if (FeexAFK.Instance.Translations.Instance.Translate("afk_general_not_found") != "afk_general_not_found")
                 {
-                    UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_general_not_found"), Color.green);
+                    UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_general_not_found"), Color.green);
                 }
                 return;
             }
 
             if (command.Length == 2 && command[0] == "set" && caller.HasPermission("afk.set"))
             {
-                if (EasyAFK.listAFK.Contains(player.CSteamID))
+                if (FeexAFK.listAFK.Contains(player.CSteamID))
                 {
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_afk") == string.Empty))
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_afk") != "afk_set_caller_error_afk")
                     {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_afk", player.DisplayName), Color.green);
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_afk", player.DisplayName), Color.green);
                     }
                 }
 
                 if (caller.Id == player.Id)
                 {
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_self") == string.Empty))
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_self") != "afk_set_caller_error_self")
                     {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_self", player.DisplayName), Color.green);
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_self", player.DisplayName), Color.green);
                     }
                     return;
                 }
 
-                if (player.IsAdmin && !EasyAFK.Instance.Configuration.Instance.afkCheckAdmins)
+                if (player.IsAdmin && !FeexAFK.Instance.Configuration.Instance.afkCheckAdmins)
                 {
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_admin") == string.Empty))
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_admin") != "afk_set_caller_error_admin")
                     {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_admin", player.DisplayName), Color.green);
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_admin", player.DisplayName), Color.green);
                     }
                     return;
                 }
 
-                EasyAFK.listAFK.Add(player.CSteamID);
+                FeexAFK.listAFK.Add(player.CSteamID);
 
-                if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_general_true") == string.Empty))
+                if (FeexAFK.Instance.Translations.Instance.Translate("afk_general_true") != "afk_general_true")
                 {
-                    UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_general_true", player.DisplayName), Color.yellow);
+                    UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_general_true", player.DisplayName), Color.yellow);
                 }
-                if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_set_player") == string.Empty))
+                if (FeexAFK.Instance.Translations.Instance.Translate("afk_set_player") != "afk_set_player")
                 {
-                    UnturnedChat.Say(player, EasyAFK.Instance.Translations.Instance.Translate("afk_set_player", caller.DisplayName), Color.green);
+                    UnturnedChat.Say(player, FeexAFK.Instance.Translations.Instance.Translate("afk_set_player", caller.DisplayName), Color.green);
                 }
-                if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller") == string.Empty))
+                if (FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller") != "afk_set_caller")
                 {
-                    UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_set_caller", player.DisplayName), Color.green);
+                    UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller", player.DisplayName), Color.green);
                 }
 
                 return;
             }
             else if (command.Length == 2 && command[0] == "check" && caller.HasPermission("afk.check"))
             {
-                if (EasyAFK.listAFK.Contains(player.CSteamID))
+                if (FeexAFK.listAFK.Contains(player.CSteamID))
                 {
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_check_caller_true") == string.Empty))
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_true") != "afk_check_caller_true")
                     {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_check_caller_true", player.DisplayName), Color.green);
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_true", player.DisplayName), Color.green);
                     }
                 }
                 else
                 {
-                    if (!(EasyAFK.Instance.Translations.Instance.Translate("afk_check_caller_false") == string.Empty))
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_false") != "afk_check_caller_false")
                     {
-                        UnturnedChat.Say(caller, EasyAFK.Instance.Translations.Instance.Translate("afk_check_caller_false", player.DisplayName), Color.green);
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_false", player.DisplayName), Color.green);
                     }
                 }
 

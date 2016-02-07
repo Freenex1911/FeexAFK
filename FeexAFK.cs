@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using Rocket.API;
+﻿using Rocket.API;
 using Rocket.API.Collections;
 using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
@@ -11,12 +8,15 @@ using Rocket.Unturned.Events;
 using Rocket.Unturned.Player;
 using UnityEngine;
 using SDG.Unturned;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
-namespace Freenex.EasyAFK
+namespace Freenex.FeexAFK
 {
-    public class EasyAFK : RocketPlugin<EasyAFKConfiguration>
+    public class FeexAFK : RocketPlugin<FeexAFKConfiguration>
     {
-        public static EasyAFK Instance;
+        public static FeexAFK Instance;
 
         public static readonly List<Steamworks.CSteamID> listAFK = new List<Steamworks.CSteamID>();
         private static readonly Dictionary<Steamworks.CSteamID, Thread> dicCheckPlayers = new Dictionary<Steamworks.CSteamID, Thread>();
@@ -53,10 +53,10 @@ namespace Freenex.EasyAFK
             U.Events.OnPlayerConnected += PlayerConnected;
             U.Events.OnPlayerDisconnected += PlayerDisconnected;
             UnturnedPlayerEvents.OnPlayerChatted += UnturnedPlayerEvents_OnPlayerChatted;
-            UnturnedPlayerEvents.OnPlayerInventoryAdded += UnturnedPlayerEvents_OnPlayerInventoryAdded;
-            UnturnedPlayerEvents.OnPlayerInventoryRemoved += UnturnedPlayerEvents_OnPlayerInventoryRemoved;
-            UnturnedPlayerEvents.OnPlayerInventoryResized += UnturnedPlayerEvents_OnPlayerInventoryResized;
-            UnturnedPlayerEvents.OnPlayerInventoryUpdated += UnturnedPlayerEvents_OnPlayerInventoryUpdated;
+            //UnturnedPlayerEvents.OnPlayerInventoryAdded += UnturnedPlayerEvents_OnPlayerInventoryAdded;
+            //UnturnedPlayerEvents.OnPlayerInventoryRemoved += UnturnedPlayerEvents_OnPlayerInventoryRemoved;
+            //UnturnedPlayerEvents.OnPlayerInventoryResized += UnturnedPlayerEvents_OnPlayerInventoryResized;
+            //UnturnedPlayerEvents.OnPlayerInventoryUpdated += UnturnedPlayerEvents_OnPlayerInventoryUpdated;
             UnturnedPlayerEvents.OnPlayerUpdatePosition += UnturnedPlayerEvents_OnPlayerUpdatePosition;
             UnturnedPlayerEvents.OnPlayerUpdateStat += UnturnedPlayerEvents_OnPlayerUpdateStat;
             
@@ -86,7 +86,7 @@ namespace Freenex.EasyAFK
                 }
             }
 
-            Logger.Log("Freenex's EasyAFK has been loaded!");
+            Logger.Log("Freenex's FeexAFK has been loaded!");
         }
 
         protected override void Unload()
@@ -94,10 +94,10 @@ namespace Freenex.EasyAFK
             U.Events.OnPlayerConnected -= PlayerConnected;
             U.Events.OnPlayerDisconnected -= PlayerDisconnected;
             UnturnedPlayerEvents.OnPlayerChatted -= UnturnedPlayerEvents_OnPlayerChatted;
-            UnturnedPlayerEvents.OnPlayerInventoryAdded -= UnturnedPlayerEvents_OnPlayerInventoryAdded;
-            UnturnedPlayerEvents.OnPlayerInventoryRemoved -= UnturnedPlayerEvents_OnPlayerInventoryRemoved;
-            UnturnedPlayerEvents.OnPlayerInventoryResized -= UnturnedPlayerEvents_OnPlayerInventoryResized;
-            UnturnedPlayerEvents.OnPlayerInventoryUpdated -= UnturnedPlayerEvents_OnPlayerInventoryUpdated;
+            //UnturnedPlayerEvents.OnPlayerInventoryAdded -= UnturnedPlayerEvents_OnPlayerInventoryAdded;
+            //UnturnedPlayerEvents.OnPlayerInventoryRemoved -= UnturnedPlayerEvents_OnPlayerInventoryRemoved;
+            //UnturnedPlayerEvents.OnPlayerInventoryResized -= UnturnedPlayerEvents_OnPlayerInventoryResized;
+            //UnturnedPlayerEvents.OnPlayerInventoryUpdated -= UnturnedPlayerEvents_OnPlayerInventoryUpdated;
             UnturnedPlayerEvents.OnPlayerUpdatePosition -= UnturnedPlayerEvents_OnPlayerUpdatePosition;
             UnturnedPlayerEvents.OnPlayerUpdateStat -= UnturnedPlayerEvents_OnPlayerUpdateStat;
             listAFK.Clear();
@@ -105,7 +105,7 @@ namespace Freenex.EasyAFK
             dicLastActivity.Clear();
             //dicLastPosition.Clear();
 
-            Logger.Log("Freenex's EasyAFK has been unloaded!");
+            Logger.Log("Freenex's FeexAFK has been unloaded!");
         }
 
         private void playerCheckAFK(UnturnedPlayer player)
@@ -140,19 +140,19 @@ namespace Freenex.EasyAFK
                         {
                             if (!(Provider.Players.Count > Configuration.Instance.afkKickMinPlayers)) { return; }
 
-                            if (EasyAFK.Instance.Translations.Instance.Translate("afk_general_kick_chat") != "afk_general_kick_chat")
+                            if (FeexAFK.Instance.Translations.Instance.Translate("afk_general_kick_chat") != "afk_general_kick_chat")
                             {
-                                UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_general_kick_chat", player.DisplayName), Color.yellow);
+                                UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_general_kick_chat", player.DisplayName), Color.yellow);
                             }
                             Logger.Log(player.CSteamID + " [" + player.CharacterName + "] has been kicked while afk.");
-                            player.Kick(EasyAFK.Instance.Translations.Instance.Translate("afk_general_kick_msg"));
+                            player.Kick(FeexAFK.Instance.Translations.Instance.Translate("afk_general_kick_msg"));
                         }
                         else
                         {
                             listAFK.Add(player.CSteamID);
-                            if (EasyAFK.Instance.Translations.Instance.Translate("afk_general_true") != "afk_general_true")
+                            if (FeexAFK.Instance.Translations.Instance.Translate("afk_general_true") != "afk_general_true")
                             {
-                                UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_general_true", player.DisplayName), Color.yellow);
+                                UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_general_true", player.DisplayName), Color.yellow);
                             }
                         }
                     }
@@ -169,9 +169,9 @@ namespace Freenex.EasyAFK
                 if (listAFK.Contains(player.CSteamID))
                 {
                     listAFK.Remove(player.CSteamID);
-                    if (EasyAFK.Instance.Translations.Instance.Translate("afk_general_false") != "afk_general_false")
+                    if (FeexAFK.Instance.Translations.Instance.Translate("afk_general_false") != "afk_general_false")
                     {
-                        UnturnedChat.Say(EasyAFK.Instance.Translations.Instance.Translate("afk_general_false", player.DisplayName), Color.yellow);
+                        UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_general_false", player.DisplayName), Color.yellow);
                     }
                 }
             }
@@ -222,25 +222,25 @@ namespace Freenex.EasyAFK
             updatePlayerActivity(player);
         }
 
-        private void UnturnedPlayerEvents_OnPlayerInventoryAdded(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte inventoryIndex, SDG.Unturned.ItemJar P)
-        {
-            updatePlayerActivity(player);
-        }
+        //private void UnturnedPlayerEvents_OnPlayerInventoryAdded(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte inventoryIndex, SDG.Unturned.ItemJar P)
+        //{
+        //    updatePlayerActivity(player);
+        //}
 
-        private void UnturnedPlayerEvents_OnPlayerInventoryRemoved(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte inventoryIndex, SDG.Unturned.ItemJar P)
-        {
-            updatePlayerActivity(player);
-        }
+        //private void UnturnedPlayerEvents_OnPlayerInventoryRemoved(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte inventoryIndex, SDG.Unturned.ItemJar P)
+        //{
+        //    updatePlayerActivity(player);
+        //}
 
-        private void UnturnedPlayerEvents_OnPlayerInventoryResized(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte O, byte U)
-        {
-            updatePlayerActivity(player);
-        }
+        //private void UnturnedPlayerEvents_OnPlayerInventoryResized(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte O, byte U)
+        //{
+        //    updatePlayerActivity(player);
+        //}
 
-        private void UnturnedPlayerEvents_OnPlayerInventoryUpdated(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte inventoryIndex, SDG.Unturned.ItemJar P)
-        {
-            updatePlayerActivity(player);
-        }
+        //private void UnturnedPlayerEvents_OnPlayerInventoryUpdated(UnturnedPlayer player, Rocket.Unturned.Enumerations.InventoryGroup inventoryGroup, byte inventoryIndex, SDG.Unturned.ItemJar P)
+        //{
+        //    updatePlayerActivity(player);
+        //}
 
         private void UnturnedPlayerEvents_OnPlayerUpdatePosition(UnturnedPlayer player, Vector3 position)
         {

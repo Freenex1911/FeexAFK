@@ -1,8 +1,8 @@
 ﻿using Rocket.API;
 
-namespace Freenex.EasyAFK
+namespace Freenex.FeexAFK
 {
-    public class EasyAFKConfiguration : IRocketPluginConfiguration
+    public class FeexAFKConfiguration : IRocketPluginConfiguration
     {
         public int afkSeconds;
         public bool afkCheckAdmins;
