@@ -1,2 +1,2 @@
-# FeexAFKs
+# FeexAFK
 Simple afk plugin.
