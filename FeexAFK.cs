@@ -33,6 +33,7 @@ namespace Freenex.FeexAFK
                     {"afk_general_kick_msg","Kicked for being afk."},
                     {"afk_general_kick_chat","{0} is afk and has been kicked."},
                     {"afk_general_not_found","Player not found."},
+                    {"afk_general_invalid_parameter","Invalid parameter."},
                     {"afk_set_player","You were set afk by {0}."},
                     {"afk_set_caller","You set {0} afk."},
                     {"afk_set_caller_error_afk","{0} is already afk."},
