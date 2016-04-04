@@ -59,7 +59,7 @@ namespace Freenex.FeexAFK
             //UnturnedPlayerEvents.OnPlayerInventoryResized += UnturnedPlayerEvents_OnPlayerInventoryResized;
             //UnturnedPlayerEvents.OnPlayerInventoryUpdated += UnturnedPlayerEvents_OnPlayerInventoryUpdated;
             UnturnedPlayerEvents.OnPlayerUpdatePosition += UnturnedPlayerEvents_OnPlayerUpdatePosition;
-            UnturnedPlayerEvents.OnPlayerUpdateStat += UnturnedPlayerEvents_OnPlayerUpdateStat;
+            //UnturnedPlayerEvents.OnPlayerUpdateStat += UnturnedPlayerEvents_OnPlayerUpdateStat;
             
             foreach (SteamPlayer player in Provider.Players)
             {
@@ -100,7 +100,7 @@ namespace Freenex.FeexAFK
             //UnturnedPlayerEvents.OnPlayerInventoryResized -= UnturnedPlayerEvents_OnPlayerInventoryResized;
             //UnturnedPlayerEvents.OnPlayerInventoryUpdated -= UnturnedPlayerEvents_OnPlayerInventoryUpdated;
             UnturnedPlayerEvents.OnPlayerUpdatePosition -= UnturnedPlayerEvents_OnPlayerUpdatePosition;
-            UnturnedPlayerEvents.OnPlayerUpdateStat -= UnturnedPlayerEvents_OnPlayerUpdateStat;
+            //UnturnedPlayerEvents.OnPlayerUpdateStat -= UnturnedPlayerEvents_OnPlayerUpdateStat;
             listAFK.Clear();
             dicCheckPlayers.Clear();
             dicLastActivity.Clear();
@@ -245,12 +245,15 @@ namespace Freenex.FeexAFK
 
         private void UnturnedPlayerEvents_OnPlayerUpdatePosition(UnturnedPlayer player, Vector3 position)
         {
-            updatePlayerActivity(player);
+            if (player.Stance != EPlayerStance.SWIM)
+            {
+                updatePlayerActivity(player);
+            }
         }
 
-        private void UnturnedPlayerEvents_OnPlayerUpdateStat(UnturnedPlayer player, SDG.Unturned.EPlayerStat stat)
-        {
-            updatePlayerActivity(player);
-        }
+        //private void UnturnedPlayerEvents_OnPlayerUpdateStat(UnturnedPlayer player, SDG.Unturned.EPlayerStat stat)
+        //{
+        //    updatePlayerActivity(player);
+        //}
     }
 }
