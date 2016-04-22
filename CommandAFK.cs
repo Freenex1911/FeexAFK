@@ -157,6 +157,5 @@ namespace Freenex.FeexAFK
                 }
             }
         }
-
     }
 }
