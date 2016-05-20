@@ -4,22 +4,21 @@ namespace Freenex.FeexAFK
 {
     public class FeexAFKConfiguration : IRocketPluginConfiguration
     {
-        public int afkSeconds;
-        public bool afkCheckAdmins;
-        public bool afkKick;
-        public bool afkKickAdmins;
-        public int afkKickMinPlayers;
-        public int afkCheckInterval;
-        
+        public int Seconds;
+        public int CheckInterval;
+        public bool MessageEnabled;
+        public bool KickEnabled;
+        public int KickMinPlayers;
+        public bool IgnoreAdmins;
 
         public void LoadDefaults()
         {
-            afkSeconds = 300;
-            afkCheckAdmins = false;
-            afkKick = false;
-            afkKickAdmins = false;
-            afkKickMinPlayers = 0;
-            afkCheckInterval = 1000;
+            Seconds = 300;
+            CheckInterval = 1000;
+            MessageEnabled = true;
+            KickEnabled = false;
+            KickMinPlayers = 0;
+            IgnoreAdmins = true;
         }
     }
 }

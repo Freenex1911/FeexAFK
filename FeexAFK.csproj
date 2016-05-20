@@ -72,6 +72,7 @@
     <Compile Include="CommandAFK.cs" />
     <Compile Include="FeexAFKConfiguration.cs" />
     <Compile Include="FeexAFK.cs" />
+    <Compile Include="FeexAFKPlayerComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
