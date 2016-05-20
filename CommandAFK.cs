@@ -51,7 +51,7 @@ namespace Freenex.FeexAFK
 
         public void Execute(IRocketPlayer caller, string[] command)
         {
-            if (command.Length == 2 && command[0] == "set" && caller.HasPermission("afk.check"))
+            if (command.Length == 2 && command[0] == "set" && caller.HasPermission("afk.set"))
             {
                 UnturnedPlayer player = UnturnedPlayer.FromName(command[1]);
                 if (player == null)
@@ -98,7 +98,7 @@ namespace Freenex.FeexAFK
                     }
                 }
             }
-            else if (command.Length == 1 && command[0] == "checkall" && caller.HasPermission("afk.check"))
+            else if (command.Length == 1 && command[0] == "checkall" && caller.HasPermission("afk.checkall"))
             {
                 int playerCount = 0;
                 StringBuilder stringBuilder = new StringBuilder();
