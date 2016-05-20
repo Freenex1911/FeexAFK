@@ -16,7 +16,7 @@ namespace Freenex.FeexAFK
         
         void FixedUpdate()
         {
-            if ((DateTime.Now - lastCheck).TotalMilliseconds >= FeexAFK.Instance.Configuration.Instance.CheckInterval)
+            if ((DateTime.Now - lastCheck).TotalMilliseconds >= FeexAFK.Instance.Configuration.Instance.CheckInterval && FeexAFK.Instance.State == Rocket.API.PluginState.Loaded)
             {
                 if (lastPosition != Player.Player.transform.position)
                 {
