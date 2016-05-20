@@ -9,7 +9,7 @@ namespace Freenex.FeexAFK
     public class FeexAFKPlayerComponent : UnturnedPlayerComponent
     {
         public DateTime lastActivity = DateTime.Now;
-        public bool isAFK { get; private set; } = false;
+        public bool isAFK { get; private set; }
 
         private DateTime lastCheck = DateTime.Now;
         private Vector3 lastPosition = new Vector3(0, 0, 0);
