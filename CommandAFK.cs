@@ -41,7 +41,6 @@ namespace Freenex.FeexAFK
             {
                 return new List<string>()
                 {
-                    "afk",
                     "afk.set",
                     "afk.check",
                     "afk.checkall"
