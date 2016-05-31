@@ -1,4 +1,5 @@
-﻿using Rocket.Unturned.Chat;
+﻿using Rocket.API;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using System;
@@ -24,7 +25,7 @@ namespace Freenex.FeexAFK
                     lastActivity = DateTime.Now;
                 }
 
-                if (FeexAFK.Instance.Configuration.Instance.IgnoreAdmins && Player.IsAdmin) { return; }
+                if ((Player.IsAdmin && FeexAFK.Instance.Configuration.Instance.IgnoreAdmins) || (!Player.IsAdmin && Player.HasPermission("afk.prevent"))) { return; }
 
                 if ((DateTime.Now - lastActivity).TotalSeconds >= FeexAFK.Instance.Configuration.Instance.Seconds)
                 {
