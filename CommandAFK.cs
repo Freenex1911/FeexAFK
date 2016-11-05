@@ -61,21 +61,21 @@ namespace Freenex.FeexAFK
                 {
                     if (player.GetComponent<FeexAFKPlayerComponent>().isAFK)
                     {
-                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_afk", player.DisplayName)); return;
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_afk", player.CharacterName)); return;
                     }
                     if (caller.Id == player.Id)
                     {
-                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_self", player.DisplayName)); return;
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_self", player.CharacterName)); return;
                     }
                     if (FeexAFK.Instance.Configuration.Instance.IgnoreAdmins && player.IsAdmin)
                     {
-                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_admin", player.DisplayName)); return;
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller_error_admin", player.CharacterName)); return;
                     }
 
                     player.GetComponent<FeexAFKPlayerComponent>().lastActivity = DateTime.Now.AddSeconds(-FeexAFK.Instance.Configuration.Instance.Seconds);
                     
-                    UnturnedChat.Say(player, FeexAFK.Instance.Translations.Instance.Translate("afk_set_player", caller.DisplayName));
-                    UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller", player.DisplayName));
+                    UnturnedChat.Say(player, FeexAFK.Instance.Translations.Instance.Translate("afk_set_player", ((UnturnedPlayer)caller).CharacterName));
+                    UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_set_caller", player.CharacterName));
                 }
             }
             else if (command.Length == 2 && command[0] == "check" && caller.HasPermission("afk.check"))
@@ -89,11 +89,11 @@ namespace Freenex.FeexAFK
                 {
                     if (player.GetComponent<FeexAFKPlayerComponent>().isAFK)
                     {
-                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_true", player.DisplayName));
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_true", player.CharacterName));
                     }
                     else
                     {
-                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_false", player.DisplayName));
+                        UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_check_caller_false", player.CharacterName));
                     }
                 }
             }
@@ -102,14 +102,14 @@ namespace Freenex.FeexAFK
                 int playerCount = 0;
                 StringBuilder stringBuilder = new StringBuilder();
 
-                foreach (SteamPlayer steamPlayer in Provider.Players)
+                foreach (SteamPlayer steamPlayer in Provider.clients)
                 {
                     UnturnedPlayer player = UnturnedPlayer.FromSteamPlayer(steamPlayer);
                     if (player.GetComponent<FeexAFKPlayerComponent>().isAFK)
                     {
                         playerCount ++;
                         if (stringBuilder.ToString() != string.Empty) { stringBuilder.Append(", "); }
-                        stringBuilder.Append(player.DisplayName);
+                        stringBuilder.Append(player.CharacterName);
                     }
                 }
 
@@ -119,7 +119,7 @@ namespace Freenex.FeexAFK
                 }
                 else
                 {
-                    UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_true", Provider.Players.Count, stringBuilder.ToString()));
+                    UnturnedChat.Say(caller, FeexAFK.Instance.Translations.Instance.Translate("afk_checkall_caller_true", Provider.clients.Count, stringBuilder.ToString()));
                 }
             }
             else

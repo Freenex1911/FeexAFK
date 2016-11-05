@@ -17,9 +17,9 @@ namespace Freenex.FeexAFK
         
         void FixedUpdate()
         {
-            if ((DateTime.Now - lastCheck).TotalMilliseconds >= FeexAFK.Instance.Configuration.Instance.CheckInterval && FeexAFK.Instance.State == Rocket.API.PluginState.Loaded)
+            if ((DateTime.Now - lastCheck).TotalMilliseconds >= FeexAFK.Instance.Configuration.Instance.CheckInterval && FeexAFK.Instance.State == PluginState.Loaded)
             {
-                if (lastPosition != Player.Player.transform.position)
+                if (lastPosition != Player.Player.transform.position && Player.Stance != EPlayerStance.SWIM)
                 {
                     lastPosition = Player.Player.transform.position;
                     lastActivity = DateTime.Now;
@@ -27,14 +27,8 @@ namespace Freenex.FeexAFK
 
                 if ((Player.IsAdmin && FeexAFK.Instance.Configuration.Instance.IgnoreAdmins) || (!Player.IsAdmin && Player.HasPermission("afk.prevent"))) { return; }
 
-                if ((DateTime.Now - lastActivity).TotalSeconds >= FeexAFK.Instance.Configuration.Instance.Seconds)
-                {
-                    if (!isAFK) { isAFK = true; AFK_true(); }
-                }
-                else
-                {
-                    if (isAFK) { isAFK = false; AFK_false(); }
-                }
+                if ((DateTime.Now - lastActivity).TotalSeconds >= FeexAFK.Instance.Configuration.Instance.Seconds) { if (!isAFK) { AFK_true(); } }
+                else { if (isAFK) { AFK_false(); } }
 
                 lastCheck = DateTime.Now;
             }
@@ -42,22 +36,20 @@ namespace Freenex.FeexAFK
 
         public void AFK_true()
         {
+            isAFK = true;
+
             if (FeexAFK.Instance.Configuration.Instance.MessageEnabled)
-            {
-                UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_true", Player.DisplayName), Color.yellow);
-            }
-            if (FeexAFK.Instance.Configuration.Instance.KickEnabled && Provider.Players.Count >= FeexAFK.Instance.Configuration.Instance.KickMinPlayers)
-            {
+                UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_true", Player.CharacterName), Color.yellow);
+            if (FeexAFK.Instance.Configuration.Instance.KickEnabled && Provider.clients.Count >= FeexAFK.Instance.Configuration.Instance.KickMinPlayers)
                 Provider.kick(Player.CSteamID, FeexAFK.Instance.Translations.Instance.Translate("afk_kick"));
-            }
         }
 
         public void AFK_false()
         {
+            isAFK = false;
+
             if (FeexAFK.Instance.Configuration.Instance.MessageEnabled)
-            {
-                UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_false", Player.DisplayName), Color.yellow);
-            }
+                UnturnedChat.Say(FeexAFK.Instance.Translations.Instance.Translate("afk_false", Player.CharacterName), Color.yellow);
         }
     }
 }

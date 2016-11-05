@@ -1,11 +1,10 @@
 ﻿using Rocket.API.Collections;
 using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
+using Rocket.Unturned.Events;
 using Rocket.Unturned.Player;
-using UnityEngine;
 using SDG.Unturned;
 using System;
-using Rocket.Unturned.Events;
 
 namespace Freenex.FeexAFK
 {
@@ -51,7 +50,7 @@ namespace Freenex.FeexAFK
             Logger.Log("Freenex's FeexAFK has been unloaded!");
         }
 
-        private void UnturnedPlayerEvents_OnPlayerChatted(UnturnedPlayer player, ref Color color, string message, EChatMode chatMode, ref bool cancel)
+        private void UnturnedPlayerEvents_OnPlayerChatted(UnturnedPlayer player, ref UnityEngine.Color color, string message, EChatMode chatMode, ref bool cancel)
         {
             player.GetComponent<FeexAFKPlayerComponent>().lastActivity = DateTime.Now;
         }
